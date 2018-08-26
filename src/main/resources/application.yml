@@ -5,7 +5,7 @@ server:
 logging:
   level:
     .: info
-    cn.lhfei.drill: debug
+    cn.lhfei.flink: debug
     org.springframework: info
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

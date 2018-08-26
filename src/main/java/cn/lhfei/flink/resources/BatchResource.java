@@ -45,7 +45,7 @@ public class BatchResource extends AbstractResource {
 	
 	@RequestMapping(value = "/wordCount", method = GET)
 	public String count(@RequestParam String output) throws Exception {
-		String input = "/export/app_sdk/word.txt";
+		String input = "word.txt";
 		
 		LOG.debug("Output: {}", output);
 		
