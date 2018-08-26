@@ -29,5 +29,5 @@ import org.apache.flink.api.java.tuple.Tuple2;
 
 public interface WordCountService {
 
-	DataSet<Tuple2<String, Integer>> count(String[] args) throws Exception;
+	DataSet<Tuple2<String, Integer>> count(String input, String output) throws Exception;
 }

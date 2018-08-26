@@ -44,13 +44,12 @@ public class BatchResource extends AbstractResource {
 	}
 	
 	@RequestMapping(value = "/wordCount", method = GET)
-	public String count(@RequestParam String outPath) throws Exception {
-		String input = "--input /export/app_sdk/word.txt";
-		String output = "--output " + outPath;
+	public String count(@RequestParam String output) throws Exception {
+		String input = "/export/app_sdk/word.txt";
 		
 		LOG.debug("Output: {}", output);
 		
-		DataSet<Tuple2<String, Integer>> counts = wordCountService.count(new String[] {input, output});
+		DataSet<Tuple2<String, Integer>> counts = wordCountService.count(input, output);
 		
 		return "ok";
 	}

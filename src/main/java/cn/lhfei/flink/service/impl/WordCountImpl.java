@@ -20,14 +20,12 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import cn.lhfei.flink.service.WordCountService;
-import cn.lhfei.flink.service.support.WordCountData;
 
 /**
  * @version 0.1
@@ -40,27 +38,13 @@ import cn.lhfei.flink.service.support.WordCountData;
 public class WordCountImpl implements WordCountService {
 	private static final Logger LOG = LoggerFactory.getLogger(WordCountImpl.class);
 
-	public DataSet<Tuple2<String, Integer>> count(String[] args) throws Exception {
-		
-		final ParameterTool params = ParameterTool.fromArgs(args);
-
+	public DataSet<Tuple2<String, Integer>> count(String input, String output) throws Exception {
 		// set up the execution environment
 		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-		// make parameters available in the web interface
-		env.getConfig().setGlobalJobParameters(params);
-
 		// get input data
 		DataSet<String> text;
-		if (params.has("input")) {
-			// read the text file from given input path
-			text = env.readTextFile(params.get("input"));
-		} else {
-			// get default test text data
-			LOG.debug("Executing WordCount example with default input data set.");
-			LOG.debug("Use --input to specify file input.");
-			text = WordCountData.getDefaultTextLineDataSet(env);
-		}
+		text = env.readTextFile(input);
 
 		DataSet<Tuple2<String, Integer>> counts =
 				// split up the lines in pairs (2-tuples) containing: (word,1)
@@ -69,7 +53,8 @@ public class WordCountImpl implements WordCountService {
 				.groupBy(0)
 				.sum(1);
 		
-		counts.writeAsCsv(params.get("output"), "\n", " ");
+		
+		counts.writeAsCsv(output, "\n", " ");
 		// execute program
 		env.execute("WordCount Example");
 
