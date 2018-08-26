@@ -68,6 +68,8 @@ public class WordCountImpl implements WordCountService {
 				// group by the tuple field "0" and sum up tuple field "1"
 				.groupBy(0)
 				.sum(1);
+		
+		counts.print();
 
 		return counts;
 		
