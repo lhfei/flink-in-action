@@ -1,0 +1,12 @@
+server:
+  port: 10000
+  servlet:
+    context-path: /api/v1/
+logging:
+  level:
+    .: info
+    cn.lhfei.drill: debug
+    org.springframework: info
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
