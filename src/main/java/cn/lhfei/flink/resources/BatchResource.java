@@ -18,14 +18,11 @@ package cn.lhfei.flink.resources;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.lhfei.flink.service.WordCountService;
@@ -47,29 +44,13 @@ public class BatchResource extends AbstractResource {
 	}
 	
 	@RequestMapping(value = "/wordCount", method = GET)
-	public String count(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String count(@RequestParam String outPath) throws Exception {
 		String input = "--input /export/app_sdk/word.txt";
+		String output = "--output " + outPath;
 		
-		DataSet<Tuple2<String, Integer>> counts = wordCountService.count(new String[] {input});
+		LOG.debug("Output: {}", output);
 		
-		response.setContentType("csv");
-		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=wordcount.csv");
-		
-		// Content-Length
-		// response.setContentLength((int) file.length());
-		
-		counts.writeAsCsv("wordcount.csv");
-
-		/*BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file));
-		BufferedOutputStream outStream = new BufferedOutputStream(resonse.getOutputStream());
-
-		byte[] buffer = new byte[1024];
-		int bytesRead = 0;
-		while ((bytesRead = inStream.read(buffer)) != -1) {
-			outStream.write(buffer, 0, bytesRead);
-		}
-		outStream.flush();
-		inStream.close();*/
+		DataSet<Tuple2<String, Integer>> counts = wordCountService.count(new String[] {input, output});
 		
 		return "ok";
 	}
