@@ -40,6 +40,11 @@ import cn.lhfei.flink.service.WordCountService;
 @RequestMapping("/jobs")
 public class BatchResource extends AbstractResource {
 
+	@RequestMapping(value = "/ok", method = GET)
+	public String isOk() {
+		return "ok";
+	}
+	
 	@RequestMapping(value = "/wordCount", method = GET)
 	public DataSet<Tuple2<String, Integer>> count() throws Exception {
 		String input = "";
