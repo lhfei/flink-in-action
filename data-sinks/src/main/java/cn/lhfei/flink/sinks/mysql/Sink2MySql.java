@@ -55,13 +55,14 @@ public class Sink2MySql extends RichSinkFunction<AuditLog> {
 	@Override
 	public void invoke(AuditLog audit, Context context) throws Exception {
 		super.invoke(audit, context);
+		
 		ps.setString(1, audit.getOperatorId());
 		ps.setString(2, audit.getDelegation());
 		ps.setString(3, audit.getTaskId());
 		ps.setString(4, audit.getOperationType());
 		ps.setString(5, audit.getOperationStatus());
-		ps.setDate(6, new java.sql.Date(audit.getCreateTime().getTime()));
-		ps.setDate(7, new java.sql.Date(audit.getLatestTime().getTime()));
+		ps.setString(6, audit.getCreateTime());
+		ps.setString(7, audit.getLatestTime());
 		ps.setInt(8, audit.getDataStatus());
 		
 		ps.executeUpdate();

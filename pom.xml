@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>cn.lhfei.flink</groupId>
@@ -28,7 +25,7 @@
 		<httpclient.version>4.5.8</httpclient.version>
 		<common.pool2.version>2.6.2</common.pool2.version>
 		<lombok.version>1.18.8</lombok.version>
-		
+
 		<mysql.version>5.1.47</mysql.version>
 		<snakeyaml.version>1.24</snakeyaml.version>
 		<configuration2.version>2.5</configuration2.version>
@@ -37,10 +34,19 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Flink EcoSystem -->
 			<dependency>
 				<groupId>org.apache.flink</groupId>
 				<artifactId>flink-core</artifactId>
 				<version>${flink.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.flink</groupId>
+				<artifactId>flink-table</artifactId>
+				<version>${flink.version}</version>
+				<type>pom</type>
+				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
@@ -55,18 +61,41 @@
 				<artifactId>flink-streaming-scala_${scala.version}</artifactId>
 				<version>${flink.version}</version>
 			</dependency>
-
-			<dependency>
-				<groupId>org.apache.flink</groupId>
-				<artifactId>flink-table</artifactId>
-				<version>${flink.version}</version>
-				<type>pom</type>
-				<scope>provided</scope>
-			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.flink</groupId>
 				<artifactId>flink-connector-kafka_${scala.version}</artifactId>
 				<version>${flink.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.flink</groupId>
+				<artifactId>flink-table-api-java-bridge_${scala.version}</artifactId>
+				<version>${flink.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.flink</groupId>
+				<artifactId>flink-table-api-scala-bridge_${scala.version}</artifactId>
+				<version>${flink.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.flink</groupId>
+				<artifactId>flink-table-planner_${scala.version}</artifactId>
+				<version>${flink.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.flink</groupId>
+				<artifactId>flink-streaming-scala_${scala.version}</artifactId>
+				<version>${flink.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.apache.flink</groupId>
+			    <artifactId>flink-connector-filesystem_${scala.version}</artifactId>
+			    <version>${flink.version}</version>
 			</dependency>
 
 			<!-- Google Libs -->
@@ -99,23 +128,23 @@
 				<artifactId>commons-pool2</artifactId>
 				<version>${common.pool2.version}</version>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.apache.commons</groupId>
-			    <artifactId>commons-configuration2</artifactId>
-			    <version>${configuration2.version}</version>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-configuration2</artifactId>
+				<version>${configuration2.version}</version>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>commons-beanutils</groupId>
-			    <artifactId>commons-beanutils</artifactId>
-			    <version>${commons.beanutils.version}</version>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>${commons.beanutils.version}</version>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>mysql</groupId>
-			    <artifactId>mysql-connector-java</artifactId>
-			    <version>${mysql.version}</version>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.version}</version>
 			</dependency>
 
 			<dependency>
@@ -124,13 +153,13 @@
 				<version>${lombok.version}</version>
 				<scope>provided</scope>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.yaml</groupId>
-			    <artifactId>snakeyaml</artifactId>
-			    <version>${snakeyaml.version}</version>
+				<groupId>org.yaml</groupId>
+				<artifactId>snakeyaml</artifactId>
+				<version>${snakeyaml.version}</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -207,6 +236,29 @@
 					<artifactId>maven-shade-plugin</artifactId>
 					<version>3.2.1</version>
 				</plugin>
+
+				<plugin>
+					<groupId>net.alchim31.maven</groupId>
+					<artifactId>scala-maven-plugin</artifactId>
+					<version>4.0.1</version>
+					<executions>
+						<execution>
+							<id>scala-compile-first</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>add-source</goal>
+								<goal>compile</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>scala-test-compile</id>
+							<phase>process-test-resources</phase>
+							<goals>
+								<goal>testCompile</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -215,5 +267,6 @@
 		<module>commons</module>
 		<module>data-sources</module>
 		<module>data-sinks</module>
+		<module>flink-table</module>
 	</modules>
 </project>

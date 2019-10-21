@@ -16,30 +16,104 @@
 
 package cn.lhfei.flink.commons.domain;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @version 0.1
  *
  * @author Hefei Li
  *
- * Created on Jul 31, 2019
+ *         Created on Jul 31, 2019
  */
 
-public class AuditLog extends AbstractDomain {
-	private static final long serialVersionUID = -4247796563913420077L;
+public class AuditLog /* extends AbstractDomain */ {
+
+	public AuditLog() {
+		Date date = new Date();
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		this.latestTime = sf.format(date);
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getOperatorId() {
+		return operatorId;
+	}
+
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
+	}
+
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getLatestTime() {
+		return latestTime;
+	}
+
+	public void setLatestTime(String latestTime) {
+		// this.latestTime = latestTime;
+	}
+
+	public int getDataStatus() {
+		return dataStatus;
+	}
+
+	public void setDataStatus(int dataStatus) {
+		this.dataStatus = dataStatus;
+	}
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+
+	public String getDelegation() {
+		return delegation;
+	}
+
+	public void setDelegation(String delegation) {
+		this.delegation = delegation;
+	}
 
 	public String getOperationType() {
 		return operationType;
 	}
+
 	public void setOperationType(String operationType) {
 		this.operationType = operationType;
 	}
+
 	public String getOperationStatus() {
 		return operationStatus;
 	}
+
 	public void setOperationStatus(String operationStatus) {
 		this.operationStatus = operationStatus;
 	}
-	
+
+	private Long id;
+	private String operatorId;
+	private String createTime;
+	private String latestTime;
+	private int dataStatus;
+	private String taskId;
+	private String delegation;
 	private String operationType;
 	private String operationStatus;
 }
